@@ -15,6 +15,6 @@ To Run Project We Must do this steps :
 
 1- run mysql from xampp
 2- run laravel files by terminal-> php artisan ser
-3- to run front-end fikes by terminal -> npm run dev
+3- to run front-end files by terminal -> npm run dev
 
 

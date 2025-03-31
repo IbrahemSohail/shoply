@@ -13,7 +13,7 @@ This Project using Laravel 11 && Tailwind for front-end
 
 To Run Project We Must do this steps :
 
-1- run mysql from examp
+1- run mysql from xampp
 2- run laravel files by terminal-> php artisan ser
 3- to run front-end fikes by terminal -> npm run dev
 

@@ -12,9 +12,9 @@
 This Project using Laravel 11 && Tailwind for front-end
 
 To Run Project We Must do this steps :
+<ul>
+<li>run mysql from xampp</li>
+<li>run laravel files by terminal-> php artisan ser</li>
+<li>to run front-end files by terminal -> npm run dev</li>
 
-1- run mysql from xampp
-2- run laravel files by terminal-> php artisan ser
-3- to run front-end files by terminal -> npm run dev
-
-
+</ul>

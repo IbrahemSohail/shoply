@@ -18,3 +18,15 @@ To Run Project We Must do this steps :
 <li>to run front-end files by terminal -> npm run dev</li>
 
 </ul>
+
+<p>الخطوات لتشغيل مشروع Laravel </p>
+<ol>
+    <li>
+        git clone https://github.com/username/project-name.git
+</li>
+    <li>
+       in terminal : composer install
+
+    </li>
+</ol>
+

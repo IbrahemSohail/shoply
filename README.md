@@ -19,8 +19,8 @@ To Run Project We Must do this steps :
 
 </ul>
 
-<b>الخطوات لتشغيل مشروع Laravel </b>
-<p>نقوم بعمل الخطوات التالية داخل ال Termenal</p>
+<b>Run Project After Install From Github </b>
+<p>We do the following steps inside the Termenal:</p>
 <ol>
     <li>
         git clone https://github.com/IbrahemSohail/shoply.git

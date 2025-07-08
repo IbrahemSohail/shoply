@@ -19,14 +19,18 @@ To Run Project We Must do this steps :
 
 </ul>
 
-<p>الخطوات لتشغيل مشروع Laravel </p>
+<b>الخطوات لتشغيل مشروع Laravel </b>
+<p>نقوم بعمل الخطوات التالية داخل ال Termenal</p>
 <ol>
     <li>
-        git clone https://github.com/username/project-name.git
+        git clone https://github.com/IbrahemSohail/shoply.git
 </li>
     <li>
-       in terminal : composer install
-
+       composer install
     </li>
+    <li>cp .env.example .env
+</li>
+    <li>php artisan key:generate
+</li>
 </ol>
 

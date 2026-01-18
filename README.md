@@ -1,36 +1,100 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Shoply - E-Commerce Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Shoply is a modern, full-featured e-commerce application built with **Laravel 11**. It provides a seamless shopping experience for customers and a powerful dashboard for administrators to manage products, categories, orders, and taxes.
 
-## About Laravel
+## 🚀 Features
 
-This Project using Laravel 11 && Tailwind for front-end
+### For Customers
 
-To Run Project We Must do this steps :
-<ul>
-<li>run mysql from xampp</li>
-<li>run laravel files by terminal-> php artisan ser</li>
-<li>to run front-end files by terminal -> npm run dev</li>
+- **Browse Products**: View products with details, images, and prices.
+- **Live Search**: Real-time product search functionality.
+- **Categories**: Filter products by categories.
+- **Shopping Cart**: Add items to cart, update quantities, and remove items.
+- **Checkout**: Secure checkout process to place orders.
+- **User Accounts**: Register, login, and manage profile.
 
-</ul>
+### For Administrators
 
-<b>Run Project After Install From Github </b>
-<p>We do the following steps inside the Termenal:</p>
-<ol>
-    <li>
-        git clone https://github.com/IbrahemSohail/shoply.git
-</li>
-    <li>
-       composer install
-    </li>
-    <li>cp .env.example .env
-</li>
-    <li>php artisan key:generate
-</li>
-</ol>
+- **Dashboard**: Overview of system status.
+- **Product Management**: Create, read, update, and delete (CRUD) products.
+- **Category Management**: Manage product categories.
+- **Order Management**: View and manage customer orders.
+- **Tax Management**: Configure tax rates and types.
+- **Secure Access**: Role-based authentication (Admin/User).
 
+## 🛠️ Tech Stack
+
+- **Backend**: [Laravel 11](https://laravel.com)
+- **Frontend**: [Blade Templates](https://laravel.com/docs/blade), [Tailwind CSS](https://tailwindcss.com), [Alpine.js](https://alpinejs.dev)
+- **Database**: MySQL
+- **Build Tool**: Vite
+
+## 📦 Installation
+
+Follow these steps to set up the project locally:
+
+1.  **Clone the Repository**
+
+    ```bash
+    git clone https://github.com/IbrahemSohail/shoply.git
+    cd shoply
+    ```
+
+2.  **Install Dependencies**
+
+    ```bash
+    composer install
+    npm install
+    ```
+
+3.  **Environment Setup**
+    Copy the example environment file and configure your database credentials:
+
+    ```bash
+    cp .env.example .env
+    ```
+
+    _Edit `.env` file and set `DB_DATABASE`, `DB_USERNAME`, and `DB_PASSWORD`._
+
+4.  **Generate Application Key**
+
+    ```bash
+    php artisan key:generate
+    ```
+
+5.  **Run Migrations**
+    Set up the database tables:
+
+    ```bash
+    php artisan migrate
+    ```
+
+6.  **Build Frontend Assets**
+    ```bash
+    npm run build
+    ```
+
+## 🚀 Running the Application
+
+1.  **Start the Local Server**
+
+    ```bash
+    php artisan serve
+    ```
+
+2.  **Start Vite (for development)**
+
+    ```bash
+    npm run dev
+    ```
+
+3.  **Access the App**
+    Open your browser and visit: `http://127.0.0.1:8000`
+
+## 👤 Authors
+
+- **Ibrahem Sohail** - _Initial Work_
+
+## 📄 License
+
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

@@ -19,9 +19,6 @@ class ProductController extends Controller
     }
 
     public function create(){
-        if (!Auth::user()->is_admin) {
-            abort(403);
-        }
         $categories = Category::all();
         $taxes = Tax::all();
         return view('products.create', compact('categories', 'taxes'));
@@ -36,9 +33,9 @@ class ProductController extends Controller
             'size' => 'nullable|string',
             'price' => 'required|numeric',
             'tax' => 'required|numeric',
-            'categories_id' => 'required|exists:categories,id',
+            'category_id' => 'required|exists:categories,id',
             'image' => 'nullable|image|max:2048',
-            'taxes_id' => 'required|exists:taxes,id'
+            'tax_id' => 'required|exists:taxes,id'
 
         ]);
 
@@ -53,36 +50,27 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        if (!Auth::user()->is_admin) {
-            abort(403);
-        }
         $categories = Category::all();
         return view('products.edit', compact('product', 'categories'));
     }
 
     public function update(Request $request, Product $product)
     {
-        if (!Auth::user()->is_admin) {
-            abort(403);
-        }else
-            $product->update([
-                'name' => $request->name,
-                'price' => $request->price,
-            ]);
-        
-            if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('products', 'public');
-                $product->update(['image' => $imagePath]);
-            }
-        
-            return redirect()->route('products.index');
+        $product->update([
+            'name' => $request->name,
+            'price' => $request->price,
+        ]);
+    
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+            $product->update(['image_path' => $imagePath]);
         }
+    
+        return redirect()->route('products.index');
+    }
 
     public function destroy(Product $product)
     {
-        if (!Auth::user()->is_admin) {
-            abort(403);
-        }
         if ($product->image_path) {
             Storage::disk('public')->delete($product->image_path);
         }

@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('carts', function (Blueprint $table) {
-            $table->unsignedBigInteger('orders_id')->nullable();
-            $table->foreign('orders_id')
-            ->references('id')
-            ->on('orders');
-        });
+        // This migration is no longer needed as order_id is handled by 2025_02_16_084110
+        // Keeping empty to prevent errors
     }
 
     /**
@@ -24,8 +20,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('carts', function (Blueprint $table) {
-            //
-        });
+        // Nothing to revert
     }
 };

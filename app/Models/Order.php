@@ -15,15 +15,11 @@ class Order extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'users_id', 'id');
     }
 
-    public function carts()
+    public function carts(): HasMany
     {
-    return $this->hasMany(Cart::class,'orders_id','id');
-    }
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
+        return $this->hasMany(Cart::class, 'order_id', 'id');
     }
 }

@@ -15,24 +15,13 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
 
-        <body class="font-sans antialiased">
-            <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-                @include('layouts.navigation')
-    
-                <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
-                    {{ $slot }}
-                </main>
-            </div>
-        </body>
-        
-<script>
-    function loadContent(url) {
-        fetch(url)
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('content-area').innerHTML = html;
-            })
-            .catch(error => console.error('Error loading content:', error));
-    }
-</script>
+    <body class="font-sans antialiased">
+        <div class="min-h-screen bg-gray-100 flex flex-col">
+            @include('layouts.navigation')
+
+            <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+                {{ $slot }}
+            </main>
+        </div>
+    </body>
     </html>

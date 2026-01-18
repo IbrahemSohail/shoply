@@ -1,5 +1,5 @@
-<body class="flex h-screen">
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+<body class="flex-col h-screen flex">
+<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -7,7 +7,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
 
@@ -24,7 +24,7 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button 
-                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                             <div>{{ Auth::user()->name }}</div>
 
                             <div class="ms-1">
@@ -60,7 +60,7 @@
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open"
-                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
+                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -76,15 +76,12 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+        <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
+                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
             </div>
 
@@ -107,89 +104,4 @@
         </div>
     </div>
 </nav>
-<!-- Sidebar -->
-<aside class="w-64 bg-white shadow-lg h-screen flex-shrink-0">
-    <div class="p-4">
-        <h2 class="text-xl font-bold text-gray-800 mb-4">Shoply</h2>
-        <nav class="space-y-2">
-            <!-- Categories Section -->
-            <div x-data="{ open: false }" class="group">
-                <div @click="open = !open" 
-                    class="flex items-center justify-between p-2 text-gray-700 rounded-lg hover:bg-gray-100 cursor-pointer">
-                    <div class="flex items-center">
-                        <img src="{{ asset('images/category.svg') }}" class="w-5 h-5 mr-2">
-                        <span>Categories</span>
-                    </div>
-                    <svg class="w-4 h-4 transform transition-transform" 
-                        :class="{ 'rotate-180': open }" 
-                        fill="none" 
-                        stroke="currentColor" 
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                    </svg>
-                </div>
-                <div x-show="open" class="ml-6 space-y-2 mt-2">
-                    <a href="{{ route('categories.create') }}" class="block p-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg">
-                        Create Category    
-                    </a>
-                    <a href="{{ route('categories.index') }}" class="block p-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg">
-                        Show Categories    
-                    </a>
-                </div>
-            </div>
-
-            <!-- Products Section -->
-            <div x-data="{ open: false }" class="group">
-                <div @click="open = !open" 
-                    class="flex items-center justify-between p-2 text-gray-700 rounded-lg hover:bg-gray-100 cursor-pointer">
-                    <div class="flex items-center">
-                        <img src="{{ asset('images/product.svg') }}" class="w-5 h-5 mr-2">
-                        <span>Products</span>
-                    </div>
-                    <svg class="w-4 h-4 transform transition-transform" 
-                        :class="{ 'rotate-180': open }" 
-                        fill="none" 
-                        stroke="currentColor" 
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                    </svg>
-                </div>
-                <div x-show="open" class="ml-6 space-y-2 mt-2">
-                    <a href="{{ route('products.create') }}" class="block p-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg">
-                        Add Product
-                    </a>
-                    <a href="{{ route('products.index') }}" class="block p-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg">
-                        Show Product
-                    </a>
-                </div>
-            </div>
-
-            <!-- Taxes Section -->
-            <div x-data="{ open: false }" class="group">
-                <div @click="open = !open" 
-                    class="flex items-center justify-between p-2 text-gray-700 rounded-lg hover:bg-gray-100 cursor-pointer">
-                    <div class="flex items-center">
-                        <img src="{{ asset('images/tax.svg') }}" class="w-5 h-5 mr-2">
-                        <span>Taxes</span>
-                    </div>
-                    <svg class="w-4 h-4 transform transition-transform" 
-                        :class="{ 'rotate-180': open }" 
-                        fill="none" 
-                        stroke="currentColor" 
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                    </svg>
-                </div>
-                <div x-show="open" class="ml-6 space-y-2 mt-2">
-                    <a href="{{ route('taxes.create') }}" class="block p-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg">
-                        Add Tax
-                    </a>
-                    <a href="{{ route('taxes.index') }}" class="block p-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg">
-                        Show Taxes
-                    </a>
-                </div>
-            </div>
-        </nav>
-    </div>
-</aside>
 </body>

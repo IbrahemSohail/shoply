@@ -14,10 +14,9 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         Category::query()->insert([
-            ['name'=>'Furniture'],
-            ['name'=>'Electrical Appliances'],
-            ['name'=>'Food']
+            ['name'=>'Furniture', 'image_path' => 'default.jpg'],
+            ['name'=>'Electrical Appliances', 'image_path' => 'default.jpg'],
+            ['name'=>'Food', 'image_path' => 'default.jpg']
         ]);
-        // Category::factory()->count(10)->create();
     }
 }

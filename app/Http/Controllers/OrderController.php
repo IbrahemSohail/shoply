@@ -13,37 +13,37 @@ use Illuminate\Support\Facades\Auth;
 class OrderController extends Controller
 {
     public function checkout()
-{
-    // $user = Auth::user();
-    // dd($user);
-
-    try {
-        $user = User::find(Auth::user()->id);
-        DB::beginTransaction();
-        $order = $user->orders()->create([
-            'users_id' => $user->id, 
-            'order_date' => now()
-        ]);
-        $user->carts()->update(['orders_id' => $order->id]);
-        // $user->carts()->delete();
-        DB::commit(); 
+    {
+        try {
+            /** @var User $user */
+            $user = Auth::user();
+            if (!$user) {
+                return redirect()->route('login');
+            }
+            DB::beginTransaction();
+            $order = $user->orders()->create([
+                'users_id' => $user->id, 
+                'order_date' => now()
+            ]);
+            $user->carts()->whereNull('order_id')->update(['order_id' => $order->id]);
+            DB::commit(); 
         } catch (\Exception $e) {
-        DB::rollBack();
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Error processing order');
         }       
         
-    return redirect()->route('order');
-}
-
-public function index(User $user)
-{
-    if (!Auth::check()) {
-        return redirect()->route('login');
+        return redirect()->route('order');
     }
-    
-    $order = Order::where('users_id',Auth::user()->id)
-                    ->with('carts')
-                    ->get();
-    //  dd($order);
-    return view('order', ['orders' => $order]);
-}
+
+    public function index()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+        
+        $order = Order::where('users_id', Auth::user()->id)
+                        ->with('carts')
+                        ->get();
+        return view('order', ['orders' => $order]);
+    }
 }

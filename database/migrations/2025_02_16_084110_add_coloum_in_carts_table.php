@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
+        Schema::table('carts', function (Blueprint $table) {
+            if (!Schema::hasColumn('carts', 'order_id')) {
+                $table->unsignedBigInteger('order_id')->nullable();
+                $table->foreign('order_id')->references('id')->on('orders')->onDelete('set null');
+            }
         });
     }
 
@@ -22,7 +25,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('carts', function (Blueprint $table) {
-            $table->foreignId('order_id')->references('id')->on('orders')->nullable()->constrained()->onDelete('set null');
+            if (Schema::hasColumn('carts', 'order_id')) {
+                $table->dropForeign(['order_id']);
+                $table->dropColumn('order_id');
+            }
         });
     }
 };

@@ -11,9 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->renameColumn('user_id', 'users_id');
-        });
+        // This column already exists as users_id, no need to rename
     }
 
     /**
@@ -21,8 +19,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
-            //
-        });
+        // Nothing to revert
     }
 };

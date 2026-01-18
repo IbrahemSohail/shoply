@@ -14,7 +14,7 @@ use App\Http\Controllers\ProcessCheckoutController;
 
 
 
-Route::view('/','home')->name('home');
+// Route::view('/','home')->name('home'); // Removed in favor of CategoryController@home
 
 // Route::view('/cart','cart')->name('cart');
 
@@ -45,20 +45,7 @@ Route::get('/product', [ProductController::class, 'index'])->name('products.inde
 
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
-Route::get('/products', [ProductController::class,'view']
-)->middleware(['auth', 'is_admin'])->name('products');
-Route::middleware('auth')->group(function () {
 
-    Route::get('/create', [ProductController::class, 'create'])->name('products.create');
-
-    Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-
-    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
-
-    Route::post('/products', [ProductController::class, 'store'])->name('products.store');
-
-    Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
-});
 
 
 
@@ -66,20 +53,7 @@ Route::get('/category', [CategoryController::class, 'index'])->name('categories.
 
 Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
 
-Route::get('/categories', [CategoryController::class,'view']
-)->middleware(['auth', 'is_admin'])->name('categories');
-Route::middleware('auth')->group(function () {
 
-    Route::get('category/create', [CategoryController::class, 'create'])->name('categories.create');
-
-    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
-
-    Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
-
-    Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
-
-    Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
-});
 
 
 
@@ -112,4 +86,26 @@ Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
 Route::post('/order', [OrderController::class, 'checkout'])->name('checkout.process');
 
     
-  Route::get('/orders', [OrderController::class, 'index'])->name('order');
+    
+Route::middleware(['auth', 'is_admin'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class,'view'])->name('dashboard');
+    
+    // Products Admin Routes
+    Route::get('/products', [ProductController::class,'view'])->name('products');
+    Route::get('/create', [ProductController::class, 'create'])->name('products.create');
+    Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+    Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+    // Categories Admin Routes
+    Route::get('/categories', [CategoryController::class,'view'])->name('categories');
+    Route::get('category/create', [CategoryController::class, 'create'])->name('categories.create');
+    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+    Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+});
+
+Route::get('/orders', [OrderController::class, 'index'])->name('order');
+

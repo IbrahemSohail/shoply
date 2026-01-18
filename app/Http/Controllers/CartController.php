@@ -16,12 +16,12 @@ class CartController extends Controller
     {
         $user = Auth::user();
         if(!$user){
-            return view('auth.login');
+            return redirect()->route('login');
         }
-        else{
         $cartItems = Cart::with('product')
-        ->where('users_id', $user->id)
-        ->whereNull('orders_id')->get();
+            ->where('users_id', $user->id)
+            ->whereNull('order_id')
+            ->get();
         $originalPrice = $cartItems->sum(function ($item) {
             return $item->product->price * $item->quantity;
         });
@@ -36,34 +36,34 @@ class CartController extends Controller
         $total = $originalPrice - $savings + $storePickup + $tax;
     
         return view('cart.index', compact('cartItems', 'originalPrice', 'savings', 'storePickup', 'tax', 'total'));
-        
     }
-    }
-    public function store(Request $request, Product $product , Order $order)
+
+    public function store(Request $request, Product $product)
     {
         $user = Auth::user();
-        if(!$user){
+        if (!$user) {
             return view('auth.login');
-        }else{
-        $existingCartItem = Cart::where('users_id', $user->id)
-            ->where('products_id', $product->id)
-            ->first();
-
-        if ($existingCartItem) {
-            $existingCartItem->update([
-                'quantity' => $existingCartItem->quantity + 1
-            ]);
         } else {
-            Cart::create([
-                'users_id' => $user->id,
-                'products_id' => $product->id,
-                'quantity' => 1,
-                'order_id'=>$order->id
-            ]);
-        }
+            $existingCartItem = Cart::where('users_id', $user->id)
+                ->where('products_id', $product->id)
+                ->whereNull('order_id')
+                ->first();
 
-        return redirect()->route('cart.index')->with('success', 'Added Successfully');
-    }
+            if ($existingCartItem) {
+                $existingCartItem->update([
+                    'quantity' => $existingCartItem->quantity + 1
+                ]);
+            } else {
+                Cart::create([
+                    'users_id' => $user->id,
+                    'products_id' => $product->id,
+                    'quantity' => 1,
+                    'order_id' => null
+                ]);
+            }
+
+            return redirect()->route('cart.index')->with('success', 'Added Successfully');
+        }
     }
     public function destroy(Cart $cartItems)
     {
@@ -72,29 +72,32 @@ class CartController extends Controller
     }
     
     public function checkout()
-{
-    $user = Auth::user();
-    $cartItems = Cart::with('product')->where('users_id', $user->id)->get();
+    {
+        $user = Auth::user();
+        $cartItems = Cart::with('product')
+            ->where('users_id', $user->id)
+            ->whereNull('order_id')
+            ->get();
 
-    $originalPrice = $cartItems->sum(function ($item) {
-        return $item->product->price * $item->quantity;
-    });
+        $originalPrice = $cartItems->sum(function ($item) {
+            return $item->product->price * $item->quantity;
+        });
 
-    $tax = $cartItems->sum(function ($item) {
-        return ($item->product->price * $item->quantity) * ($item->product->tax / 100);
-    });
+        $tax = $cartItems->sum(function ($item) {
+            return ($item->product->price * $item->quantity) * ($item->product->tax / 100);
+        });
 
-    $total = $originalPrice + $tax;
+        $total = $originalPrice + $tax;
 
-    $invoiceData = [
-        'user' => $user,
-        'cartItems' => $cartItems,
-        'originalPrice' => $originalPrice,
-        'tax' => $tax,
-        'total' => $total,
-        'date' => now()->format('Y-m-d H:i:s'),
-    ];
-    return view('invoice', compact('invoiceData'));
-}
+        $invoiceData = [
+            'user' => $user,
+            'cartItems' => $cartItems,
+            'originalPrice' => $originalPrice,
+            'tax' => $tax,
+            'total' => $total,
+            'date' => now()->format('Y-m-d H:i:s'),
+        ];
+        return view('invoice', compact('invoiceData'));
+    }
 
 }

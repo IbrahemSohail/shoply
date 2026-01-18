@@ -26,18 +26,10 @@ class CategoryController extends Controller
     }
     public function create()
     {
-        if (!Auth::user()->is_admin) {
-            abort(403);
-        }else{
-        // return view('categories.partials.create-form'); 
         return view('categories.create');
-    }
     }
     public function store(Request $request)
     {
-        if (!Auth::user()->is_admin) {
-            abort(403);
-        }else{
         $request->validate([
             'name' => 'required',
             'image_path' => 'required|image',
@@ -52,7 +44,6 @@ class CategoryController extends Controller
 
         return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
-    }
     public function show(Category $category)
     {
         return view('categories.show', compact('category'));
@@ -60,41 +51,27 @@ class CategoryController extends Controller
 
     public function edit(Category $category)
     {
-        
-        if (!Auth::user()->is_admin) {
-            abort(403);
-        }else{
         return view('categories.edit', compact('category'));
-    }
     }
     public function update(Request $request, Category $category)
     {
-        if (!Auth::user()->is_admin) {
-            abort(403);
-        }else{
-                $category->update([
-                    'name' => $request->name,
-                ]);
-            
-                if ($request->hasFile('image')) {
-                    $imagePath = $request->file('image')->store('categories', 'public');
-                    $category->update(['image' => $imagePath]);
-                }
-            
-                return redirect()->route('categories.index');
-            
-    }
+        $category->update([
+            'name' => $request->name,
+        ]);
+    
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('categories', 'public');
+            $category->update(['image_path' => $imagePath]);
+        }
+    
+        return redirect()->route('categories.index');
     }
     public function destroy(Category $category)
     {
-        if (!Auth::user()->is_admin) {
-            abort(403);
-        }else{
         $category->delete();
         return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
     }
-}
-public function Search(Request $request)
+public function search(Request $request)
 {
     $query = $request->input('query');
 

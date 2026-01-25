@@ -74,10 +74,10 @@
                                         class="text-yellow-500 hover:text-yellow-700 text-xs sm:text-sm">
                                         Edit
                                     </button>
-                                    <form action="{{ route('categories.destroy', $category) }}" method="POST" class="inline">
+                                    <form action="{{ route('categories.destroy', $category) }}" method="POST" class="inline" id="delete-category-dashboard-{{ $category->id }}">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-red-500 hover:text-red-700 text-xs sm:text-sm" onclick="return confirm('Are you sure?')">
+                                        <button type="button" class="text-red-500 hover:text-red-700 text-xs sm:text-sm" onclick="confirmDelete('delete-category-dashboard-{{ $category->id }}')">
                                             Delete
                                         </button>
                                     </form>
@@ -136,15 +136,16 @@
                                         name: '{{ $product->name }}',
                                         title: '{{ $product->title }}',
                                         description: '{{ $product->description }}',
-                                        price: {{ $product->price }}
+                                        price: {{ $product->price }},
+                                        offer_price: {{ $product->offer_price ?? 'null' }}
                                     }" 
                                         class="text-yellow-500 hover:text-yellow-700 text-xs sm:text-sm">
                                         Edit
                                     </button>
-                                    <form action="{{ route('products.destroy', $product) }}" method="POST" class="inline">
+                                    <form action="{{ route('products.destroy', $product) }}" method="POST" class="inline" id="delete-product-dashboard-{{ $product->id }}">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-red-500 hover:text-red-700 text-xs sm:text-sm" onclick="return confirm('Are you sure?')">
+                                        <button type="button" class="text-red-500 hover:text-red-700 text-xs sm:text-sm" onclick="confirmDelete('delete-product-dashboard-{{ $product->id }}')">
                                             Delete
                                         </button>
                                     </form>
@@ -201,10 +202,10 @@
                                         class="text-yellow-500 hover:text-yellow-700 text-xs sm:text-sm">
                                         Edit
                                     </button>
-                                    <form action="{{ route('taxes.destroy', $tax) }}" method="POST" class="inline">
+                                    <form action="{{ route('taxes.destroy', $tax) }}" method="POST" class="inline" id="delete-tax-dashboard-{{ $tax->id }}">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-red-500 hover:text-red-700" onclick="return confirm('Are you sure?')">
+                                        <button type="button" class="text-red-500 hover:text-red-700" onclick="confirmDelete('delete-tax-dashboard-{{ $tax->id }}')">
                                             Delete
                                         </button>
                                     </form>
@@ -317,7 +318,7 @@
 
     <!-- Edit Product Modal -->
     <x-modal name="edit-product" :show="false" focusable>
-        <form method="POST" class="p-6" id="edit-product-form">
+        <form method="POST" class="p-6" id="edit-product-form" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <h2 class="text-lg font-semibold mb-4">Edit Product</h2>
@@ -338,9 +339,30 @@
                     <textarea id="edit-prod-desc" name="description" class="w-full px-3 py-2 border rounded-lg" required></textarea>
                 </div>
 
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2">Price</label>
+                        <input type="number" id="edit-prod-price" name="price" step="0.01" class="w-full px-3 py-2 border rounded-lg" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Offer Price (Optional)</label>
+                        <input type="number" id="edit-prod-offer-price" name="offer_price" step="0.01" class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                </div>
+
                 <div>
-                    <label class="block text-gray-700 mb-2">Price</label>
-                    <input type="number" id="edit-prod-price" name="price" step="0.01" class="w-full px-3 py-2 border rounded-lg" required>
+                    <label class="block text-gray-700 mb-2">Category</label>
+                    <select name="category_id" id="edit-prod-category" class="w-full px-3 py-2 border rounded-lg" required>
+                        <option value="">Select Category</option>
+                        @foreach($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                 <div>
+                    <label class="block text-gray-700 mb-2">Update Image (Optional)</label>
+                    <input type="file" name="image" class="w-full px-3 py-2 border rounded-lg" accept="image/*">
                 </div>
             </div>
 
@@ -425,17 +447,36 @@
                     <textarea name="description" class="w-full px-3 py-2 border rounded-lg" required></textarea>
                 </div>
 
-                <div>
-                    <label class="block text-gray-700 mb-2">Price</label>
-                    <input type="number" name="price" step="0.01" class="w-full px-3 py-2 border rounded-lg" required>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2">Price</label>
+                        <input type="number" name="price" step="0.01" class="w-full px-3 py-2 border rounded-lg" required>
+                    </div>
+                     <div>
+                        <label class="block text-gray-700 mb-2">Offer Price (Optional)</label>
+                        <input type="number" name="offer_price" step="0.01" class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                </div>
+                 <div>
+                    <label class="block text-gray-700 mb-2">Tax</label>
+                    <input type="number" name="tax" step="0.01" class="w-full px-3 py-2 border rounded-lg" required>
                 </div>
 
                 <div>
                     <label class="block text-gray-700 mb-2">Category</label>
-                    <select name="categories_id" class="w-full px-3 py-2 border rounded-lg" required>
+                    <select name="category_id" class="w-full px-3 py-2 border rounded-lg" required>
                         <option value="">Select Category</option>
                         @foreach($categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                 <div>
+                    <label class="block text-gray-700 mb-2">Tax Type</label>
+                    <select name="tax_id" class="w-full px-3 py-2 border rounded-lg" required>
+                        <option value="">Select Tax</option>
+                        @foreach($taxes as $tax)
+                        <option value="{{ $tax->id }}">{{ $tax->name }} ({{ $tax->percent }}%)</option>
                         @endforeach
                     </select>
                 </div>
@@ -518,6 +559,15 @@
                 document.getElementById('edit-prod-title').value = window.productData.title;
                 document.getElementById('edit-prod-desc').value = window.productData.description;
                 document.getElementById('edit-prod-price').value = window.productData.price;
+                
+                // Set offer price
+                document.getElementById('edit-prod-offer-price').value = window.productData.offer_price || '';
+
+                // Set category
+                if(window.productData.category_id) {
+                     document.getElementById('edit-prod-category').value = window.productData.category_id;
+                }
+                
                 const form = document.getElementById('edit-product-form');
                 form.action = `/products/${window.productData.id}`;
             }

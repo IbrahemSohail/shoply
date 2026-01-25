@@ -1,3 +1,5 @@
+@include('./nav')
+
 <x-app-layout>
 <div class="container mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
     <div class="w-full max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-4 sm:p-6 lg:p-8">

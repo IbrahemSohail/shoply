@@ -13,13 +13,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProcessCheckoutController;
 
 
-
-// Route::view('/','home')->name('home'); // Removed in favor of CategoryController@home
-
-// Route::view('/cart','cart')->name('cart');
-
-
-
 Route::get('/dashboard', [DashboardController::class,'view']
 )->middleware(['auth', 'verified'])->name('dashboard');
 Route::middleware('auth')->group(function () {
@@ -32,11 +25,6 @@ Route::middleware('auth')->group(function () {
 
 
 require __DIR__.'/auth.php';
-
-
-// Route::resource('categories', CategoryController::class);
-
-// Route::resource('products', ProductController::class);
 
 
 
@@ -82,6 +70,7 @@ Route::delete('/cart/{cartItems}', [CartController::class, 'destroy'])
 
 
 Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+Route::post('/cart/place-order', [CartController::class, 'placeOrder'])->name('cart.placeOrder');
 
 Route::post('/order', [OrderController::class, 'checkout'])->name('checkout.process');
 
@@ -108,4 +97,8 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
 });
 
 Route::get('/orders', [OrderController::class, 'index'])->name('order');
+Route::delete('/orders/reset', [OrderController::class, 'reset'])->name('orders.reset');
 
+Route::post('/chatbot', [App\Http\Controllers\ChatbotController::class, 'handle'])->name('chatbot.handle');
+Route::get('lang/{locale}', [App\Http\Controllers\LanguageController::class, 'switch'])->name('lang.switch');
+Route::post('/ai/generate-description', [App\Http\Controllers\AiController::class, 'generateDescription'])->name('ai.generate');

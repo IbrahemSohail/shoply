@@ -1,5 +1,14 @@
-@include('link')
+@include('./nav')
 <div>
+    <div class="container mx-auto px-4 py-4">
+        <nav class="flex text-sm font-medium text-gray-500 mb-4">
+            <a href="{{ route('home') }}" class="hover:text-indigo-600 transition">{{ __('Home') }}</a>
+            <span class="mx-2">/</span>
+            <a href="{{ route('products.index') }}" class="hover:text-indigo-600 transition">{{ __('Products') }}</a>
+            <span class="mx-2">/</span>
+            <span class="text-gray-900">{{ $product->name }}</span>
+        </nav>
+    </div>
     <div class="container mx-auto px-4 py-6 sm:py-8">
       <div class="flex flex-col md:flex-row gap-6 md:gap-8">
         <!-- Product Images -->
@@ -25,15 +34,20 @@
           <h4 class="text-2xl sm:text-3xl font-bold mb-4">{{ $product->name }}</h3>
           <p class="text-gray-700 mb-6 text-sm sm:text-base">{{ $product->description }}</p>
           <div class="mb-6">
-            <span class="text-2xl sm:text-3xl font-bold mr-2">${{ number_format($product->price, 2) }}</span>
+            @if($product->offer_price)
+                <span class="text-gray-500 line-through text-lg mr-2">${{ number_format($product->price, 2) }}</span>
+                <span class="text-2xl sm:text-3xl font-bold text-red-600">${{ number_format($product->offer_price, 2) }}</span>
+            @else
+                <span class="text-2xl sm:text-3xl font-bold mr-2">${{ number_format($product->price, 2) }}</span>
+            @endif
           </div>
             <div class="mt-4 mb-6">
-                <label for="color" class="block font-medium text-sm mb-2">Color Available:</label>
+                <label for="color" class="block font-medium text-sm mb-2">{{ __('Color Available') }}:</label>
                 <select name="color" id="color" class="w-full sm:w-48 px-3 py-2 border border-gray-300 rounded-md text-sm">
                     <option value=""></option>
-                    <option value="">White</option>
-                    <option value="">Black</option>
-                    <option value="">Blue</option>
+                    <option value="">{{ __('White') }}</option>
+                    <option value="">{{ __('Black') }}</option>
+                    <option value="">{{ __('Blue') }}</option>
                 </select>
               </div>
           
@@ -44,7 +58,7 @@
               <input type="hidden" name="product_id" value="{{ $product->id }}">
 
               <div class="mb-4">
-                <label for="quantity" class="block text-sm font-medium text-gray-700 mb-2">Quantity:</label>
+                <label for="quantity" class="block text-sm font-medium text-gray-700 mb-2">{{ __('Quantity') }}:</label>
                 <input type="number" id="quantity" name="quantity" min="1" value="1"
                               class="w-full sm:w-24 px-3 py-2 text-center rounded-md border border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm">
               </div>
@@ -55,7 +69,7 @@
                               <path stroke-linecap="round" stroke-linejoin="round"
                                   d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                           </svg>
-                          Add to Cart
+                          {{ __('Add to Cart') }}
                       </button>
                     </form>
 

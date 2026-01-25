@@ -1,4 +1,4 @@
-@include('./link')
+@include('./nav')
         <main>
             <div class="container mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
                 <div class="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-md p-4 sm:p-6 lg:p-8">

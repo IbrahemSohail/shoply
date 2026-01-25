@@ -32,10 +32,12 @@ class ProductController extends Controller
             'description' => 'required|string',
             'size' => 'nullable|string',
             'price' => 'required|numeric',
+            'offer_price' => 'nullable|numeric|lt:price',
             'tax' => 'required|numeric',
             'category_id' => 'required|exists:categories,id',
             'image' => 'nullable|image|max:2048',
-            'tax_id' => 'required|exists:taxes,id'
+            'tax_id' => 'required|exists:taxes,id',
+            'color_id' => 'nullable'
 
         ]);
 
@@ -51,20 +53,31 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $categories = Category::all();
-        return view('products.edit', compact('product', 'categories'));
+        $taxes = Tax::all();
+        return view('products.edit', compact('product', 'categories', 'taxes'));
     }
 
     public function update(Request $request, Product $product)
     {
-        $product->update([
-            'name' => $request->name,
-            'price' => $request->price,
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'size' => 'nullable|string',
+            'price' => 'required|numeric',
+            'offer_price' => 'nullable|numeric|lt:price',
+            'category_id' => 'required|exists:categories,id',
+            'image' => 'nullable|image|max:2048',
         ]);
-    
+
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('products', 'public');
-            $product->update(['image_path' => $imagePath]);
+            if ($product->image_path) {
+                Storage::disk('public')->delete($product->image_path);
+            }
+            $validated['image_path'] = $request->file('image')->store('products', 'public');
         }
+
+        $product->update($validated);
     
         return redirect()->route('products.index');
     }

@@ -1,9 +1,8 @@
-@include('link')
 @include('nav')
 <div class="container mx-auto lg:py-12 lg:px-20 md:py-8 md:px-6 py-6 px-4">
     <div class="flex flex-col lg:flex-row justify-between gap-6 lg:gap-8">
         <div class="w-full lg:w-5/12 flex flex-col justify-center">
-            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold leading-8 sm:leading-9 text-gray-800 pb-4">About Us</h1>
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold leading-8 sm:leading-9 text-gray-800 pb-4">{{ __('About Us') }}</h1>
               
                 <ul class="font-normal text-xs sm:text-sm lg:text-base leading-5 sm:leading-6 text-gray-600 space-y-3">
                 <li>Ibrahim, coded Shoply's backbone. His PHP Laravel scripts were elegant, but his coffee addiction was legendary. ("If the database doesn't scale, I won't either.")</li>
@@ -20,7 +19,7 @@
 
     <div class="flex flex-col lg:flex-row justify-between gap-6 lg:gap-8 pt-8 md:pt-12">
         <div class="w-full lg:w-5/12 flex flex-col justify-center">
-            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold leading-8 sm:leading-9 text-gray-800 pb-4">Our Story</h1>
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold leading-8 sm:leading-9 text-gray-800 pb-4">{{ __('Our Story') }}</h1>
             <p class="font-normal text-xs sm:text-sm lg:text-base leading-5 sm:leading-6 text-gray-600">Two days before launch, disaster struck. During testing, Shoply's payment system charged users twice. Ibrahim blamed a "tiny" code typo. Montaser nearly shaved his beard off in stress. Abood, ever calm, ordered everyone to sleep—then debugged the glitch himself, fueled by hibiscus tea and spite.
             Opada, meanwhile, livestreamed the chaos. "Watch us fail gloriously!" he laughed, accidentally attracting 10k viewers. The comments section became a meme goldmine: "Shoply: We break systems, not prices!"</p>
         </div>

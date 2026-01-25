@@ -12,6 +12,26 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
+    private function calculateTotals($cartItems)
+    {
+        $originalPrice = $cartItems->sum(function ($item) {
+            $price = $item->product->offer_price ?? $item->product->price;
+            return $price * $item->quantity;
+        });
+    
+        $savings = $originalPrice * 0.05; // 5% discount policy
+        $storePickup = 10;
+    
+        $tax = $cartItems->sum(function ($item) {
+            $price = $item->product->offer_price ?? $item->product->price;
+            return ($price * $item->quantity) * ($item->product->tax / 100);
+        });    
+        
+        $total = $originalPrice - $savings + $storePickup + $tax;
+
+        return compact('originalPrice', 'savings', 'storePickup', 'tax', 'total');
+    }
+
     public function index()
     {
         $user = Auth::user();
@@ -22,20 +42,10 @@ class CartController extends Controller
             ->where('users_id', $user->id)
             ->whereNull('order_id')
             ->get();
-        $originalPrice = $cartItems->sum(function ($item) {
-            return $item->product->price * $item->quantity;
-        });
-    
-        $savings = $originalPrice * 0.05;
-    
-        $storePickup = 10;
-    
-        $tax = $cartItems->sum(function ($item) {
-            return ($item->product->price * $item->quantity) * ($item->product->tax / 100);
-        });    
-        $total = $originalPrice - $savings + $storePickup + $tax;
-    
-        return view('cart.index', compact('cartItems', 'originalPrice', 'savings', 'storePickup', 'tax', 'total'));
+            
+        $totals = $this->calculateTotals($cartItems);
+        
+        return view('cart.index', array_merge(['cartItems' => $cartItems], $totals));
     }
 
     public function store(Request $request, Product $product)
@@ -79,25 +89,45 @@ class CartController extends Controller
             ->whereNull('order_id')
             ->get();
 
-        $originalPrice = $cartItems->sum(function ($item) {
-            return $item->product->price * $item->quantity;
-        });
+        $totals = $this->calculateTotals($cartItems);
 
-        $tax = $cartItems->sum(function ($item) {
-            return ($item->product->price * $item->quantity) * ($item->product->tax / 100);
-        });
-
-        $total = $originalPrice + $tax;
-
-        $invoiceData = [
+        $invoiceData = array_merge([
             'user' => $user,
             'cartItems' => $cartItems,
-            'originalPrice' => $originalPrice,
-            'tax' => $tax,
-            'total' => $total,
             'date' => now()->format('Y-m-d H:i:s'),
-        ];
+        ], $totals);
+        
         return view('invoice', compact('invoiceData'));
     }
 
+    public function placeOrder()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('login');
+        }
+
+        $cartItems = Cart::where('users_id', $user->id)
+            ->whereNull('order_id')
+            ->get();
+
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('cart.index')->with('error', 'Cart is empty');
+        }
+
+        $maxOrderNum = $user->orders()->max('user_order_number') ?? 0;
+        $nextOrderNumber = $maxOrderNum + 1;
+
+        $order = Order::create([
+            'users_id' => $user->id,
+            'order_date' => now(),
+            'user_order_number' => $nextOrderNumber,
+        ]);
+
+        foreach ($cartItems as $item) {
+            $item->update(['order_id' => $order->id]);
+        }
+
+        return redirect()->route('home')->with('success', 'Order placed successfully! You can view it in your orders.');
+    }
 }

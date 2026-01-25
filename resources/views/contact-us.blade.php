@@ -1,4 +1,3 @@
-@include('link')
 @include('nav')
 <div class="container my-8 sm:my-12 mx-auto px-4 sm:px-2 md:px-4">
 
@@ -7,7 +6,7 @@
         <div class="flex justify-center">
             <div class="text-center md:max-w-xl lg:max-w-3xl">
                 <h2 class="mb-8 sm:mb-12 px-4 sm:px-6 text-2xl sm:text-3xl font-bold">
-                    Contact us
+                    {{ __('Contact Us') }}
                 </h2>
             </div>
         </div>
@@ -18,29 +17,29 @@
 
                 <div class="mb-4 w-full">
                     <label class="block font-medium mb-2 text-black text-sm" htmlFor="name">
-                            Name
+                            {{ __('Name') }}
                     </label>
-                    <input type="text" class="px-3 py-2 border w-full outline-none rounded-md text-sm" id="name" placeholder="Name" />
+                    <input type="text" class="px-3 py-2 border w-full outline-none rounded-md text-sm" id="name" placeholder="{{ __('Name') }}" />
                 </div>
 
                 <div class="mb-4 w-full">
                     <label class="block font-medium mb-2 text-black text-sm" htmlFor="email">
-                            Email
+                            {{ __('Email') }}
                     </label>
                     <input type="email" class="px-3 py-2 border w-full outline-none rounded-md text-sm" id="email"
-                            placeholder="Enter your email address" />
+                            placeholder="{{ __('Email') }}" />
                 </div>
 
                 <div class="mb-4 w-full">
                     <label class="block font-medium mb-2 text-black text-sm" htmlFor="message">
-                            Message
+                            {{ __('Message') }}
                     </label>
                     <textarea class="px-3 py-2 border rounded-md w-full outline-none text-sm" id="message" rows="4"></textarea>
                 </div>
 
                 <button type="button"
                         class="mb-6 w-full rounded bg-indigo-400 px-4 sm:px-6 py-2 sm:py-2.5 font-medium uppercase leading-normal text-white hover:shadow-md hover:bg-indigo-600 transition text-xs sm:text-sm">
-                        Send
+                        {{ __('Send') }}
                 </button>
 
             </form>
@@ -59,7 +58,7 @@
                         </div>
                         <div class="mt-4">
                             <p class="mb-2 font-bold text-sm sm:text-base">
-                                Technical support
+                                {{ __('Technical support') }}
                             </p>
                             <p class="text-neutral-500 text-xs sm:text-sm">
                                 support@example.com
@@ -81,7 +80,7 @@
                         </div>
                         <div class="mt-4">
                             <p class="mb-2 font-bold text-sm sm:text-base">
-                                Sales questions
+                                {{ __('Sales questions') }}
                             </p>
                             <p class="text-neutral-500 text-xs sm:text-sm">
                                 sales@example.com
@@ -102,7 +101,7 @@
                             </div>
                         </div>
                         <div class="mt-4">
-                            <p class="mb-2 font-bold text-sm sm:text-base">Press</p>
+                            <p class="mb-2 font-bold text-sm sm:text-base">{{ __('Press') }}</p>
                             <p class="text-neutral-500 text-xs sm:text-sm">
                                 press@example.com
                             </p>
@@ -123,7 +122,7 @@
                         </div>
                         <div class="mt-4">
                             <p class="mb-2 font-bold text-sm sm:text-base">
-                                Bug report
+                                {{ __('Bug report') }}
                             </p>
                             <p class="text-neutral-500 text-xs sm:text-sm">
                                 bugs@example.com

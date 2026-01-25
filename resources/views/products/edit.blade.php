@@ -1,3 +1,5 @@
+@include('./nav')
+
 <x-app-layout>
 <div class="container mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8 m-2 sm:m-4 lg:m-6">
     <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold mb-6">Edit Product</h1>
@@ -28,6 +30,11 @@
             </div>
 
             <div>
+                 <label class="block text-gray-700 text-sm sm:text-base font-medium mb-2">Offer Price (Optional)</label>
+                 <input type="number" step="0.01" name="offer_price" value="{{ old('offer_price', $product->offer_price) }}" class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600">
+            </div>
+
+            <div class="sm:col-span-2">
                 <label class="block text-gray-700 text-sm sm:text-base font-medium mb-2">Category</label>
                 <select name="category_id" class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600" required>
                     <option value="">Select Category</option>

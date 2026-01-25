@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -19,10 +20,13 @@ class CategoryController extends Controller
         // return view('categories.partials.list', compact('categories')); 
     }
     
+
+
     public function home(Category $category)
     {
-        $categories = Category::paginate(3); 
-        return view('home', compact('categories'));
+        $categories = Category::paginate(3, ['*'], 'categories_page');
+        $newOffers = Product::whereNotNull('offer_price')->latest()->paginate(4, ['*'], 'offers_page');
+        return view('home', compact('categories', 'newOffers'));
     }
     public function create()
     {

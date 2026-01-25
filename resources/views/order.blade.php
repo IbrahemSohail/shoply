@@ -1,81 +1,66 @@
-@extends('link') 
 
-@if (Route::has('login'))
-<nav class="bg-indigo-400 text-sm sm:text-base px-4 sm:px-6 py-3 sm:py-4">
-  <div class="flex justify-between items-center flex-wrap gap-3">
-    <div class="link flex items-center gap-2 sm:gap-4 flex-wrap">
-      <a href="{{route('home')  }}">
-        <img class="w-24 sm:w-32 lg:w-36" src="{{ URL('images/logo2.png') }}">
-      </a>
-      <a href="{{ route('categories.index') }}"
-          class="rounded-md px-2 sm:px-3 py-1 text-white transition hover:text-orange-600 text-xs sm:text-sm">
-          Category
-      </a>
-      <a href="{{ route('about-us') }}"
-          class="rounded-md px-2 sm:px-3 py-1 text-white transition hover:text-orange-600 text-xs sm:text-sm">
-          About us
-      </a>
-      <a href="{{ route('contact-us') }}"
-          class="rounded-md px-2 sm:px-3 py-1 text-white transition hover:text-orange-600 text-xs sm:text-sm">
-          Contact us
-      </a>
-      <a href="{{ route('cart.index')}}"
-          class="rounded-md px-2 sm:px-3 py-1 text-white transition hover:text-orange-600 text-xs sm:text-sm">
-          Cart
-      </a>
-      <a href="{{ route('order')}}"
-          class="rounded-md px-2 sm:px-3 py-1 text-white transition hover:text-orange-600 text-xs sm:text-sm">
-          Order
-      </a>
-    </div>
-    <div class="auth flex gap-2">
-      @auth
-      @else
-        <a href="{{ route('login') }}"
-            class="border-2 border-solid px-3 py-1 transition duration-150 text-white hover:bg-orange-600 rounded text-xs sm:text-sm">
-            Log in
-        </a>
-
-        @if (Route::has('register'))
-            <a href="{{ route('register') }}"
-                class="rounded-md px-3 py-1 transition text-white hover:text-orange-600 text-xs sm:text-sm">
-                Sign Up
-            </a>
-        @endif
-    @endauth
-    </div>
-  </div>
-</nav>
-@endif
+@include('nav')
 <div class="container mx-auto mt-6 sm:mt-10 p-4 sm:p-6 bg-white shadow-lg rounded-lg">
 
-    <h1 class="text-xl sm:text-2xl font-bold mb-6 text-center">Order Details</h1>
+    <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
+        <h1 class="text-xl sm:text-2xl font-bold text-center sm:text-left">{{ __('Order Details') }}</h1>
+        @if (!$orders->isEmpty())
+            <form id="reset-history-form" action="{{ route('orders.reset') }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="button" onclick="confirmReset()" class="mt-4 sm:mt-0 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded text-sm transition shadow-md">
+                    {{ __('Reset History') }}
+                </button>
+            </form>
+        @endif
+    </div>
+
+    <script>
+        function confirmReset() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this! All your order history will be deleted.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('reset-history-form').submit();
+                }
+            })
+        }
+    </script>
 
     @if ($orders->isEmpty())
-        <p class="text-center text-gray-600 text-sm sm:text-base">don't have orders yet</p>
+        <p class="text-center text-gray-600 text-sm sm:text-base">{{ __("You don't have any orders yet.") }}</p>
     @else
     @foreach ($orders as $order)
         <div class="mb-8 p-4 sm:p-6 border rounded-lg">
-                <h2 class="text-lg sm:text-xl font-semibold mb-4">Order Id {{ $order->id }}</h2>
-                <p class="text-gray-600 text-xs sm:text-sm">Order Date {{ $order->order_date }}</p>
+                <h2 class="text-lg sm:text-xl font-semibold mb-4">{{ __('Order Id') }} #{{ $order->user_order_number ?? $order->id }}</h2>
+                <p class="text-gray-600 text-xs sm:text-sm">{{ __('Order Date') }} {{ $order->order_date }}</p>
 
                 <div class="overflow-x-auto mt-4">
                   <table class="w-full text-xs sm:text-sm">
                     <thead>
                         <tr class="bg-gray-50">
-                            <th class="px-2 sm:px-4 py-2 text-left">Product</th>
-                            <th class="px-2 sm:px-4 py-2 text-left">Quantity</th>
-                            <th class="px-2 sm:px-4 py-2 text-left">Price</th>
-                            <th class="px-2 sm:px-4 py-2 text-left">Total</th>
+                            <th class="px-2 sm:px-4 py-2 text-left">{{ __('Product') }}</th>
+                            <th class="px-2 sm:px-4 py-2 text-left">{{ __('Quantity') }}</th>
+                            <th class="px-2 sm:px-4 py-2 text-left">{{ __('Price') }}</th>
+                            <th class="px-2 sm:px-4 py-2 text-left">{{ __('Total') }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($order->carts as $cart)
+                            @php
+                                $price = $cart->product->offer_price ?? $cart->product->price;
+                            @endphp
                             <tr class="border-t">
                                 <td class="px-2 sm:px-4 py-2">{{ $cart->product->name }}</td>
                                 <td class="px-2 sm:px-4 py-2">{{ $cart->quantity }}</td>
-                                <td class="px-2 sm:px-4 py-2">${{ number_format($cart->product->price, 2) }}</td>
-                                <td class="px-2 sm:px-4 py-2">${{ number_format($cart->product->price * $cart->quantity, 2) }}</td>
+                                <td class="px-2 sm:px-4 py-2">${{ number_format($price, 2) }}</td>
+                                <td class="px-2 sm:px-4 py-2">${{ number_format($price * $cart->quantity, 2) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -83,8 +68,9 @@
                 </div>
 
                 <div class="mt-4 text-right">
-                    <p class="text-base sm:text-lg font-semibold">Total: ${{ number_format($order->carts->sum(function ($cart) {
-                        return $cart->product->price * $cart->quantity;
+                    <p class="text-base sm:text-lg font-semibold">{{ __('Total') }}: ${{ number_format($order->carts->sum(function ($cart) {
+                        $price = $cart->product->offer_price ?? $cart->product->price;
+                        return $price * $cart->quantity;
                     }), 2) }}</p>
                 </div>
             </div>

@@ -6,7 +6,7 @@
         @csrf
         <!-- Email Address -->
         <div class="mb-4">
-            <h2 class="text-center text-lg sm:text-xl lg:text-2xl font-bold text-black mb-6">Login to Shoply</h2>
+            <h2 class="text-center text-lg sm:text-xl lg:text-2xl font-bold text-black mb-6">{{ __('Login to Shoply') }}</h2>
             <x-input-label for="email" :value="__('Email')" class="text-sm sm:text-base" />
             <x-text-input id="email" class="block mt-1 w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2 text-xs sm:text-sm" />
@@ -49,7 +49,7 @@
         </div>
         
         <div class="text-center sign-up border-t border-gray-300 pt-6 mt-6">
-            <h2 class="block font-semibold text-sm sm:text-base text-gray-700 mb-4">Don't have an account?</h2>
+            <h2 class="block font-semibold text-sm sm:text-base text-gray-700 mb-4">{{ __("Don't have an account?") }}</h2>
     
                 <a class="inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 mt-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs sm:text-sm text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150" href="{{ route('register') }}">
                     {{ __('Sign Up') }}

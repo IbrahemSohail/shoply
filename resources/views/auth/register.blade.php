@@ -4,7 +4,7 @@
 
         <!-- Name -->
         <div class="mb-4">
-            <h2 class="text-center text-lg sm:text-xl lg:text-2xl font-bold text-black mb-6">Register on Shoply</h2>
+            <h2 class="text-center text-lg sm:text-xl lg:text-2xl font-bold text-black mb-6">{{ __('Register on Shoply') }}</h2>
             <x-input-label for="name" :value="__('Name')" class="text-sm sm:text-base" />
             <x-text-input id="name" class="block mt-1 w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2 text-xs sm:text-sm" />
@@ -47,7 +47,7 @@
         </div>
         
         <div class="text-center border-t border-gray-300 pt-6">
-            <h2 class="text-sm sm:text-base text-gray-700 font-semibold mb-4">Already have an account?</h2>
+            <h2 class="text-sm sm:text-base text-gray-700 font-semibold mb-4">{{ __('Already have an account?') }}</h2>
             
             <a class="inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 bg-gray-800 border border-transparent rounded-md font-semibold text-xs sm:text-sm text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150" href="{{ route('login') }}">
                 {{ __('Login') }}

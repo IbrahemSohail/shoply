@@ -22,10 +22,10 @@
                     <td class="px-3 sm:px-6 py-3 sm:py-4 text-gray-900">{{ $tax->percent }}%</td>
                     <td class="px-3 sm:px-6 py-3 sm:py-4 flex flex-wrap gap-2 sm:gap-3">
                         <a href="{{ route('taxes.edit', $tax) }}" class="text-xs sm:text-sm text-blue-600 hover:text-blue-800 hover:underline transition">Edit</a>
-                        <form action="{{ route('taxes.destroy', $tax) }}" method="POST" class="inline">
+                        <form action="{{ route('taxes.destroy', $tax) }}" method="POST" class="inline" id="delete-tax-{{ $tax->id }}">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="text-xs sm:text-sm text-red-600 hover:text-red-800 hover:underline transition" onclick="return confirm('Are you sure you want to delete this tax?')">Delete</button>
+                            <button type="button" class="text-xs sm:text-sm text-red-600 hover:text-red-800 hover:underline transition" onclick="confirmDelete('delete-tax-{{ $tax->id }}')">Delete</button>
                         </form>
                     </td>
                 </tr>
